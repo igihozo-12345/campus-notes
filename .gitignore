@@ -1,0 +1,14 @@
+# Node.js dependencies
+node_modules/
+
+# Data directory
+data/
+
+# Log files
+*.log
+
+# Environment variables
+.env
+
+# Added for the DevOps course
+.bak
