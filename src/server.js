@@ -1,3 +1,4 @@
+
 const express = require('express');
 const Database = require('better-sqlite3');
 
@@ -8,12 +9,11 @@ function createApp() {
 
     // Create database connection
     const db = new Database(process.env.DB_PATH || ':memory:');
-
     app.locals.db = db;
 
     app.use(express.json());
 
-    // Health middleware - required by the practical
+    // Health endpoint
     app.use(require('./health.js'));
 
     let notes = [
@@ -60,10 +60,18 @@ function createApp() {
     app.post('/api/notes', (req, res) => {
         const { title, body } = req.body;
 
+        // Check empty title and body
         if (!title || !body) {
             return res.status(400).json({
                 error: 'Title and body are required'
             });
+        }
+
+        // Check title length (maximum 120 characters)
+        if (title.length > 120) {
+            return res.status(400).send(
+                'A note title cannot exceed 120 characters.'
+            );
         }
 
         const newNote = {
@@ -91,3 +99,4 @@ if (require.main === module) {
 }
 
 module.exports = { createApp };
+
