@@ -67,6 +67,8 @@ function createApp() {
             });
         }
 
+        // Limit titles to 120 characters to keep  them readable.
+        // Route-level validation provides an immediate HTTP 400 response.
         // Check title length (maximum 120 characters)
         if (title.length > 120) {
             return res.status(400).send(
